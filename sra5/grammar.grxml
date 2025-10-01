@@ -17,17 +17,22 @@
           <tag>out="action=YES";</tag></item>
       <item><ruleref uri="#no"/>
       <tag>out="action=NO";</tag></item>
+      <item><ruleref uri="#cafe"/>
+          <tag>out="action=CAFE";</tag></item>
+          <item><ruleref uri="#glace_au_chocolat"/>
+          <tag>out="action=GLACE_CHOCOLALAT";</tag></item>
     </one-of>
     <ruleref special="GARBAGE" />
   </rule>
        
-   <rule id="yes">
+ <rule id="yes">
     <one-of>
-      <item>affirmatif</item>
-      <item>tout à fait</item>
-      <item>oui</item>
+        <item>affirmatif</item>
+        <item>tout à fait</item>
+        <item>oui</item>
     </one-of> 
-  </rule> 
+ </rule> 
+  
   <rule id="no">
     <one-of>
       <item>négatif</item>
@@ -35,18 +40,21 @@
       <item>pas question</item>
     </one-of>
   </rule>
-  <rule id="cafe">
-	<item>café</item>
-  </rule>
   
-  <rule id="glace au chocolat">
-	<one-of>
+  <rule id="glace_au_chocolat">
+    <one-of>
 		<item>glace au chocolat</item>
 		<item>glace chocolat</item>
 		<item>crème glacée au chocolat</item>
 		<item>crème glacée chocolat</item>
 	</one-of>
-</rule>
+  </rule>
+  
+    <rule id="cafe">
+    <one-of>
+	<item>café</item>
+    </one-of>
+  </rule>
   
   
 </grammar>
