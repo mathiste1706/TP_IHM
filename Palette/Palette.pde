@@ -120,7 +120,14 @@ void keyPressed() {
       Forme f4=new Losange(p);
       formes.add(f4);
       mae=FSM.AFFICHER_FORMES;
-      break;    
+      break;
+      
+      case 'a':
+      Forme f5=new Carre(p);
+      formes.add(f5);
+      mae=FSM.AFFICHER_FORMES;
+      break;
+      
       
     case 'm' : // move
       mae=FSM.DEPLACER_FORMES_SELECTION;

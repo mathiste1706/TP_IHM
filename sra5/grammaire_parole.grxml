@@ -76,7 +76,6 @@
 			<item> rond <tag> out = "CIRCLE" </tag></item>
 			<item> rectangle <tag> out = "RECTANGLE" </tag></item>
 			<item> carré <tag> out ="CARRE"</tag></item>
-			<item> cylindre <tag> out ="CYLINDRE"</tag></item>
 		</one-of>
 	</rule>
 

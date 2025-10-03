@@ -2,20 +2,18 @@
  * Classe Rectangle
  */ 
  
-public class Rectangle extends Forme {
+public class Carre extends Forme {
   
   int longueur;
-  int largeur;
   
-  public Rectangle(Point p) {
+  public Carre(Point p) {
     super(p);
     this.longueur=60;
-    this.largeur=30;
   }
    
   public void update() {
     fill(this.c);
-    rect((int) this.origin.getX(),(int) this.origin.getY(),this.longueur, this.largeur);
+    square((int) this.origin.getX(),(int) this.origin.getY(),this.longueur);
   }  
   
   boolean isClicked(Point p) {
@@ -33,7 +31,7 @@ public class Rectangle extends Forme {
   
   // Calcul du périmètre du carré
   protected double perimetre() {
-    return(this.longueur*this.largeur);
+    return(this.longueur*4);
   }
   
   protected double aire(){
