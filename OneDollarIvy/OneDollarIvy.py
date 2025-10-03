@@ -157,8 +157,8 @@ if __name__ == "__main__":
     pygame.display.set_icon(icon)
     done = False
     
-    # ODI = OneDollarRecognizer(screen, True, 'GesturePoints.pickle')
-    ODI = OneDollarRecognizer(screen, False, None)
+    ODI = OneDollarRecognizer(screen, True, 'GesturePoints.pickle')
+    #ODI = OneDollarRecognizer(screen, False, None)
     ODI.OnPaint(None)
     
     while not done:
