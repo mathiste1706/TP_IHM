@@ -25,18 +25,36 @@
 		<tag> out = "none" </tag>
 		<one-of>
 			<item> créer <tag> out = "CREATE" </tag></item>
+			<item> crée <tag> out = "CREATE" </tag></item>
+			<item> fait <tag> out = "CREATE" </tag></item>
+			<item> faire <tag> out = "CREATE" </tag></item>
+			<item> met <tag> out = "CREATE" </tag></item>
+			<item> mettre <tag> out = "CREATE" </tag></item>
+			<item> dessine <tag> out = "CREATE" </tag></item>
 			<item> dessiner <tag> out = "CREATE" </tag></item>
 			<item> tracer <tag> out = "CREATE" </tag></item>
+			<item> trace <tag> out = "CREATE" </tag></item>
 
 			<item> supprimer <tag> out = "DELETE" </tag></item>
 			<item> effacer <tag> out = "DELETE" </tag></item>
+			<item> détruire <tag> out = "DELETE" </tag></item>
+			<item> supprime <tag> out = "DELETE" </tag></item>
+			<item> efface <tag> out = "DELETE" </tag></item>
+			<item> détruit <tag> out = "DELETE" </tag></item>
+			
 			
 			<item> déplacer  <tag> out = "MOVE" </tag></item>
 			<item> bouger  <tag> out = "MOVE" </tag></item>
+			<item> déplace  <tag> out = "MOVE" </tag></item>
+			<item> bouge  <tag> out = "MOVE" </tag></item>
 
 			<item> quitter <tag> out = "QUIT" </tag></item>
 			<item> sortir <tag> out = "QUIT" </tag></item>
 			<item> arrêter <tag> out = "QUIT" </tag></item>
+			<item> quitte <tag> out = "QUIT" </tag></item>
+			<item> sort <tag> out = "QUIT" </tag></item>
+			<item> arrête <tag> out = "QUIT" </tag></item>
+			
 		</one-of>
 	</rule>
 
@@ -55,7 +73,9 @@
 			<item> triangle <tag> out = "TRIANGLE" </tag></item>
 			<item> losange <tag> out = "DIAMOND" </tag></item>
 			<item> cercle <tag> out = "CIRCLE" </tag></item>
+			<item> rond <tag> out = "CIRCLE" </tag></item>
 			<item> rectangle <tag> out = "RECTANGLE" </tag></item>
+			<item> carré <tag> out ="CARRE"</tag></item>
 		</one-of>
 	</rule>
 
