@@ -4,14 +4,22 @@ class Moteur(IvyServer):
         IvyServer.__init__(self, name)
         print("start")
         self.start('127.0.0.1:2010')
-        self.bind_msg(self.handle_msg, "sra5 Parsed=action=(.*) where=(.*) form=(.*) color=(.*) localisation=(.*) Confidence=(.*) NP=.*")
-        self.bind_msg(self.handle_palette_msg, r"Palette Click x=(.*) y=(.*)")
+        self.bind_msg(self.handle_msg_vocal, "sra5 Parsed=action=(.*) where=(.*) form=(.*) color=(.*) localisation=(.*) Confidence=(.*) NP=.* Num_A=.*")
+        self.bind_msg(self.handle_msg_geste,"NDOLLAR_RECO name=(.*) score=(.*)")
+        self.bind_msg(self.handle_msg_palette, r"Palette Click x=(.*) y=(.*)")
+
+        self.bind_msg(
+            lambda agent, *groups: print("[BUS MESSAGE]", repr(groups), "AGENT:", agent),
+            "(.*)"
+        )
+
         self.name = name
         self.action = ""
         self.forme = ""
         self.couleur = ""
         self.localisation = []
         self.coordonnee = []
+
     def fuisionnable(self):
         if self.action != "" and self.forme != "" and self.localisation != []:
             return True
@@ -36,7 +44,8 @@ class Moteur(IvyServer):
             print(form)
         else:
             self.send_msg(f"ppilot5 Say=Je n'ai pas compris")
-    def handle_palette_msg(self, agent, event):
+
+    def handle_msg_palette(self, agent, event):
         try:
             x = int(event[0])
             y = int(event[1])
