@@ -356,11 +356,11 @@ def run_demo():
     ivy_app = None
     try:
         from ivy.std_api import IvyInit, IvyStart, IvyStop, IvySendMsg
-        IvyInit("NDollar", "NDollar ready", 0, None, None)
-        IvyStart("127.255.255.255:2010")
+        IvyInit("NDollar", "NDollar ready", 0)
+        IvyStart("127.0.0.1:2010")
         ivy_enabled = True
         ivy_app = {"send": IvySendMsg, "stop": IvyStop}
-        print("[Ivy] connecté 127.255.255.255:2010")
+        print("[Ivy] connecté 127.0.0.1:2010")
     except Exception as e:
         print("[Ivy] non utilisé:", e)
 
