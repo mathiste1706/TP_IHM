@@ -6,6 +6,10 @@
  */
  
 import java.awt.Point;
+import fr.dgac.ivy.*;
+
+Ivy bus;
+
 
 ArrayList<Forme> formes; // liste de formes stockées
 FSM mae; // Finite Sate Machine
@@ -25,6 +29,12 @@ void setup() {
   noStroke();
   mae = FSM.INITIAL;
   indice_forme = -1;
+  try {
+    bus = new Ivy("Palette", "Palette is ready", null);
+    bus.start("127.0.0.1:2010");
+  } catch (IvyException ie) {
+    println("Erreur Ivy : " + ie.getMessage());
+  }
 }
 
 void draw() {
@@ -60,6 +70,13 @@ void affiche() {
 
 void mousePressed() { // sur l'événement clic
   Point p = new Point(mouseX,mouseY);
+  if (bus != null) {
+    try {
+      bus.sendMsg("Palette Click x=" + mouseX + " y=" + mouseY);
+    } catch (IvyException ie) {
+      println("Erreur envoi Ivy : " + ie.getMessage());
+    }
+  }
   
   switch (mae) {
     case AFFICHER_FORMES:
