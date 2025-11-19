@@ -3,7 +3,7 @@ class Moteur(IvyServer):
     def __init__(self, name):
         IvyServer.__init__(self, name)
         print("start")
-        self.start('127.0.0.1:2010')
+        self.start('127.255.255.255:2010')
         self.bind_msg(self.handle_msg_vocal, "sra5 Parsed=action=(.*) where=(.*) form=(.*) color=(.*) localisation=(.*) Confidence=(.*) NP=.* Num_A=.*")
         self.bind_msg(self.handle_msg_geste,"NDOLLAR_RECO name=(.*) score=(.*)")
         self.bind_msg(self.handle_msg_palette, r"Palette Click x=(.*) y=(.*)")
@@ -14,6 +14,7 @@ class Moteur(IvyServer):
         )
 
         self.name = name
+        self.where=""
         self.action = ""
         self.forme = ""
         self.couleur = ""
@@ -45,7 +46,7 @@ class Moteur(IvyServer):
         else:
             self.send_msg(f"ppilot5 Say=Je n'ai pas compris")
 
-    def handle_msg_palette(self, agent, event):
+    def handle_msg_palette(self, agent, numid, event):
         try:
             x = int(event[0])
             y = int(event[1])
