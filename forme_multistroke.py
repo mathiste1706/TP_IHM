@@ -357,7 +357,7 @@ def run_demo():
     try:
         from ivy.std_api import IvyInit, IvyStart, IvyStop, IvySendMsg
         IvyInit("NDollar", "NDollar ready", 0)
-        IvyStart("127.0.0.1:2010")
+        IvyStart("127.255.255.255:2010")
         ivy_enabled = True
         ivy_app = {"send": IvySendMsg, "stop": IvyStop}
         print("[Ivy] connecté 127.0.0.1:2010")
