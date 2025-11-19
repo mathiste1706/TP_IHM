@@ -4,7 +4,7 @@ class Moteur(IvyServer):
         IvyServer.__init__(self, name)
         self.start('127.0.0.1:2010')
         self.bind_msg(self.handle_msg, "sra5 Parsed=action=(.*) where=(.*) form=(.*) color=(.*) localisation=(.*) Confidence=(.*) NP=.*")
-        self.agent.bind_msg(self.handle_palette_click, r"^Palette Click x=(.*) y=(.*)")
+        self.bind_msg(self.handle_palette_click, r"Palette Click x=(.*) y=(.*)")
 
 
         self.name = name
