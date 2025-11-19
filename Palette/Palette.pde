@@ -70,19 +70,14 @@ void affiche() {
 
 void mousePressed() { // sur l'événement clic
   Point p = new Point(mouseX,mouseY);
-  if (bus != null) {
-    try {
-      bus.sendMsg("Palette Click x=" + mouseX + " y=" + mouseY);
-    } catch (IvyException ie) {
-      println("Erreur envoi Ivy : " + ie.getMessage());
-    }
-  }
+  boolean cliqueSurForme = false; 
   
   switch (mae) {
     case AFFICHER_FORMES:
       for (int i=0;i<formes.size();i++) { // we're trying every object in the list
         // println((formes.get(i)).isClicked(p));
         if ((formes.get(i)).isClicked(p)) {
+            cliqueSurForme = true; 
           (formes.get(i)).setColor(color(random(0,255),random(0,255),random(0,255)));
         }
       } 
@@ -91,6 +86,7 @@ void mousePressed() { // sur l'événement clic
    case DEPLACER_FORMES_SELECTION:
      for (int i=0;i<formes.size();i++) { // we're trying every object in the list        
         if ((formes.get(i)).isClicked(p)) {
+          cliqueSurForme = true; 
           indice_forme = i;
           mae = FSM.DEPLACER_FORMES_DESTINATION;
         }         
@@ -108,6 +104,14 @@ void mousePressed() { // sur l'événement clic
      
     default:
       break;
+  }
+  if (bus != null) {
+    String type = cliqueSurForme ? "forme" : "vide";
+    try {
+      bus.sendMsg("Palette Click type=" + type + " x=" + mouseX + " y=" + mouseY);
+    } catch (IvyException ie) {
+      println("Erreur envoi Ivy : " + ie.getMessage());
+    }
   }
 }
 
