@@ -25,7 +25,7 @@ void setup() {
   sketch_icon = loadImage("Palette.jpg");
   surface.setIcon(sketch_icon);
   
-  formes= new ArrayList(); // nous créons une liste vide
+  formes= new ArrayList();
   noStroke();
   mae = FSM.INITIAL;
   indice_forme = -1;
@@ -52,7 +52,6 @@ void draw() {
       fill(0);
       text("Etat initial (c(ercle)/l(osange)/r(ectangle)/t(riangle) pour créer la forme à la position courante)", 50,50);
       text("m(ove)+ click pour sélectionner un objet et click pour sa nouvelle position", 50,80);
-      text("click sur un objet pour changer sa couleur de manière aléatoire", 50,110);
       break;
       
     case AFFICHER_FORMES:  // 
@@ -76,18 +75,24 @@ void affiche() {
 
 void mousePressed() { // sur l'événement clic
   Point p = new Point(mouseX,mouseY);
-  boolean cliqueSurForme = false; 
+  String c = "undefined";
   
   switch (mae) {
     case AFFICHER_FORMES:
-      for (int i=0;i<formes.size();i++) { // we're trying every object in the list
-      } 
+      for (Forme f : formes) {
+        if (f.isClicked(p)) {
+
+          c =  nameFromColor(f.getColor());
+          println(">>> CLICKED FORME = " + f.getClass().getSimpleName()
+                  + " color = " + c);
+          break;
+        }
+      }
       break;
       
    case DEPLACER_FORMES_SELECTION:
      for (int i=0;i<formes.size();i++) { // we're trying every object in the list        
         if ((formes.get(i)).isClicked(p)) {
-          cliqueSurForme = true; 
           indice_forme = i;
           mae = FSM.DEPLACER_FORMES_DESTINATION;
         }         
@@ -107,9 +112,8 @@ void mousePressed() { // sur l'événement clic
       break;
   }
   if (bus != null) {
-    String type = cliqueSurForme ? "forme" : "vide";
     try {
-      bus.sendMsg("Palette Click type=" + type + " x=" + mouseX + " y=" + mouseY);
+      bus.sendMsg("Palette Click couleur=" + c + " x=" + mouseX + " y=" + mouseY);
     } catch (IvyException ie) {
       println("Erreur envoi Ivy : " + ie.getMessage());
     }
@@ -407,7 +411,7 @@ else if (action.equalsIgnoreCase("DELETE")) {
           target = matches.get(0);
       }
     }
-    if (targer!=null){
+    if (target!=null){
       target.setLocation(coords.get(0));
       mae = FSM.AFFICHER_FORMES;
     }
@@ -451,4 +455,17 @@ boolean approxColor(color c1, color c2) {
   return abs(red(c1)-red(c2)) < 40 &&
          abs(green(c1)-green(c2)) < 40 &&
          abs(blue(c1)-blue(c2)) < 40;
+}
+
+String nameFromColor(int c) {
+  if (c == color(255, 0, 0))     return "RED";
+  if (c == color(255,128, 0))    return "ORANGE";
+  if (c == color(255,255, 0))    return "YELLOW";
+  if (c == color(0, 255, 0))     return "GREEN";
+  if (c == color(0, 0, 255))     return "BLUE";
+  if (c == color(160,32,240))    return "PURPLE";
+  if (c == color(30,30,30))      return "DARK";
+  if (c == color(200,200,200))   return "GRAY";
+
+  return "UNKNOWN";
 }
