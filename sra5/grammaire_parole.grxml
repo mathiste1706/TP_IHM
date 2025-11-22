@@ -76,6 +76,7 @@
 			<item> rond <tag> out = "CIRCLE" </tag></item>
 			<item> rectangle <tag> out = "RECTANGLE" </tag></item>
 			<item> carré <tag> out ="CARRE"</tag></item>
+            <item> forme <tag> out="undefined"</tag></item>
 		</one-of>
 	</rule>
 
@@ -86,10 +87,11 @@
 			<item> rouge <tag> out = "RED" </tag></item>
 			<item> orange <tag> out = "ORANGE" </tag></item>
 			<item> jaune <tag> out = "YELLOW" </tag></item>
-			<item> vert <tag> out = "GRREN" </tag></item>
+			<item> vert <tag> out = "GREEN" </tag></item>
 			<item> bleu <tag> out = "BLUE" </tag></item>
 			<item> violet <tag> out = "PURPLE" </tag></item>
 			<item> noir <tag> out = "DARK" </tag></item>
+            <item> couleur <tag> out = "undefined" </tag></item>
 		</one-of> 
 	</rule>
 

@@ -2,10 +2,10 @@
  * Classe Losange
  */ 
  
-public class Losange extends Forme {
+public class Diamond extends Forme {
   Point A, B,C,D;
   
-  public Losange(Point p) {
+  public Diamond(Point p) {
     super(p);
     // placement des points
     A = new Point();    

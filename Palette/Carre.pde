@@ -2,11 +2,11 @@
  * Classe Rectangle
  */ 
  
-public class Carre extends Forme {
+public class Square extends Forme {
   
   int longueur;
   
-  public Carre(Point p) {
+  public Square(Point p) {
     super(p);
     this.longueur=60;
   }
