@@ -1,0 +1,2 @@
+*.exe filter=lfs diff=lfs merge=lfs -text
+Palette/windows-amd64/java/lib/modules filter=lfs diff=lfs merge=lfs -text
