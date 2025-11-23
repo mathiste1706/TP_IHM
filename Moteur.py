@@ -23,6 +23,7 @@ class Moteur(IvyServer):
         self.couleur = ""
         self.localisation =""
         self.coordonnees = []
+        self.nbModalitees=0
 
         self.timer=None
 
@@ -46,15 +47,20 @@ class Moteur(IvyServer):
             self.couleur = ""
             self.localisation = ""
             self.coordonnees = []
+            self.nbModalitees=0
 
             self.timer = None
 
-        elif elapsed > self.SEUIL_FUSION and (self.action == "CREATE" and self.coordonnees!=[] and self.forme != ""
-                                                                   or (self.action=="DELETE" and (self.forme!="" or self.couleur!="")) or
-                                                                   (self.action=="MOVE" and (len(self.coordonnees))>1 or self.forme!="" or self.couleur!="")):
+        elif (elapsed > self.SEUIL_FUSION and ( (self.action == "CREATE" and self.nbModalitees > 1 and self.forme != "")
+        or (self.action == "DELETE" and (self.forme != "" or self.couleur != "") )
+        or (self.action == "MOVE" and ( len(self.coordonnees) > 1 or self.forme != "" or self.couleur != "")))):
 
+            if not self.coordonnees:
+                self.coordonnees=[200,200]
             self.send_msg(f"FUSION: ACTION={self.action} WHERE={self.where} FORME={self.forme} COULEUR={self.couleur} "
                           f"LOCALISATION={self.localisation} COORDONNES={self.coordonnees}")
+            print(self.nbModalitees)
+
             self.timer = None
             self.where = ""
             self.action = ""
@@ -62,10 +68,11 @@ class Moteur(IvyServer):
             self.couleur = ""
             self.localisation = ""
             self.coordonnees = []
+            self.nbModalitees = 0
+
 
 
     def handle_msg_vocal(self, agent, action, where, form, color, localisation, confidence):
-        print("handle vocal")
         if float(confidence.replace(",", ".")) > 0.50:
             self.action = action
             self.where = where
@@ -74,6 +81,7 @@ class Moteur(IvyServer):
             if self.couleur=="":
                 self.couleur = color
             self.localisation = localisation
+            self.nbModalitees += 1
             self.update_timer()
         else:
             self.send_msg(f"ppilot5 Say=Je n'ai pas compris")
@@ -82,6 +90,7 @@ class Moteur(IvyServer):
         print(confidence)
         if float(confidence) > 0.50:
             self.forme = form
+            self.nbModalitees += 1
             self.update_timer()
             print(form)
         else:
@@ -94,6 +103,7 @@ class Moteur(IvyServer):
             self.coordonnees.append([x, y])
             if couleur!="undefined":
                 self.couleur=couleur
+            self.nbModalitees += 1
             self.update_timer()
 
             print(f"[Palette] Coordonnée ajoutée : ({x}, {y})")
