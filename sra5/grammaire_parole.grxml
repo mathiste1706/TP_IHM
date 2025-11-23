@@ -71,9 +71,9 @@
 		<ruleref special="GARBAGE"/>			
 		<one-of>
 			<item> triangle <tag> out = "TRIANGLE" </tag></item>
-			<item> losange <tag> out = "DIAMOND" </tag></item>
-			<item> cercle <tag> out = "CIRCLE" </tag></item>
-			<item> rond <tag> out = "CIRCLE" </tag></item>
+			<item> losange <tag> out = "LOSANGE" </tag></item>
+			<item> cercle <tag> out = "CERCLE" </tag></item>
+			<item> rond <tag> out = "CERCLE" </tag></item>
 			<item> rectangle <tag> out = "RECTANGLE" </tag></item>
 			<item> carré <tag> out ="CARRE"</tag></item>
             <item> forme <tag> out="undefined"</tag></item>
