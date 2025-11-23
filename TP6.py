@@ -36,9 +36,10 @@ class TP6Engine(IvyServer):
         <p>Le <b>cassoulet</b>, la <b>saucisse</b> et la <b>violette</b> sont typiques.</p>
         """
 
-        path = Path("toulouse.html")
+        path = Path("toulouse.html").resolve()
         path.write_text(self.texte, encoding="utf-8")
-        #webbrowser.open(path.as_uri())
+        webbrowser.open(path.as_uri())
+
 
         self.segments = self.parse_segments(self.texte)
         self.index = 0
@@ -68,7 +69,7 @@ class TP6Engine(IvyServer):
         return segments
 
     #           GESTION FIN DE LECTURE DE PPILOT5
-    def handle_tts_finished(self, agent, numid, garbage):
+    def handle_tts_finished(self, agent, *args):
         self.wait = False
 
     #           ENVOIS MULTIMODAUX
