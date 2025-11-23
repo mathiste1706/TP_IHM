@@ -44,9 +44,8 @@ class TP6Engine(IvyServer):
         self.index = 0
         self.wait = False 
 
-    # ----------------------------------------------------------------
     #           PARSER HTML -> SEGMENTS
-    # ----------------------------------------------------------------
+    
     def parse_segments(self, html):
         soup = BeautifulSoup(html, "html.parser")
         segments = []
