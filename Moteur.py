@@ -73,7 +73,7 @@ class Moteur(IvyServer):
 
 
     def handle_msg_vocal(self, agent, action, where, form, color, localisation, confidence):
-        if float(confidence.replace(",", ".")) > 0.50:
+        if float(confidence.replace(",", ".")) > 0.70:
             self.action = action
             self.where = where
             if self.forme=="":

@@ -2,11 +2,11 @@
  * Classe Cercle
  */ 
  
-public class Circle extends Forme {
+public class Cercle extends Forme {
   
   int rayon;
   
-  public Circle(Point p) {
+  public Cercle(Point p) {
     super(p);
     this.rayon=80;
   }

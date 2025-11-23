@@ -131,7 +131,7 @@ void keyPressed() {
       break;
       
     case 'c':
-      Forme f2=new Circle(p);
+      Forme f2=new Cercle(p);
       formes.add(f2);
       mae=FSM.AFFICHER_FORMES;
       break;
@@ -143,13 +143,13 @@ void keyPressed() {
       break;  
       
     case 'l':
-      Forme f4=new Diamond(p);
+      Forme f4=new Losange(p);
       formes.add(f4);
       mae=FSM.AFFICHER_FORMES;
       break;
       
       case 'a':
-      Forme f5=new Square(p);
+      Forme f5=new Carre(p);
       formes.add(f5);
       mae=FSM.AFFICHER_FORMES;
       break;
@@ -197,11 +197,11 @@ try {
     Forme f = null;
 
     switch(forme.toUpperCase()) {
-      case "CIRCLE":  f = new Circle(p);  break;
+      case "CERCLE":  f = new Cercle(p);  break;
       case "RECTANGLE": f = new Rectangle(p); break;
       case "TRIANGLE": f = new Triangle(p); break;
-      case "SQUARE": f = new Square(p); break;
-      case "DIAMOND":  f = new Diamond(p); break;
+      case "CARRE": f = new Carre(p); break;
+      case "LOSANGE":  f = new Losange(p); break;
     }
 
     if (f != null) {
