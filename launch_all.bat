@@ -24,11 +24,10 @@ start "" /D "%CD%\Palette\windows-amd64" "Palette.exe"
 echo --- Starting Python: multi_strockes ---
 start "GESTURE" %PYTHON_EXE% forme_multistroke.py
 
-timeout /t 5 /nobreak >nul
+timeout /t 2 /nobreak >nul
 echo --- Starting Visionneur ---
 start "VISIONNEUR" "visionneur_1_2\visonneur.bat"
 
-timeout /t 5 /nobreak >nul
 echo --- Starting Python: Moteur ---
 start "MOTEUR" %PYTHON_EXE% Moteur.py
 
