@@ -55,7 +55,7 @@ class Moteur(IvyServer):
         or (self.action == "DELETE" and (self.forme != "" or self.couleur != "") )
         or (self.action == "MOVE" and ( len(self.coordonnees) > 1 or self.forme != "" or self.couleur != "")))):
 
-            if not self.coordonnees:
+            if not self.coordonnees and self.action=="CREATE":
                 self.coordonnees=[200,200]
             self.send_msg(f"FUSION: ACTION={self.action} WHERE={self.where} FORME={self.forme} COULEUR={self.couleur} "
                           f"LOCALISATION={self.localisation} COORDONNES={self.coordonnees}")

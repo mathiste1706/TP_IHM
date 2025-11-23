@@ -327,7 +327,7 @@ else if (action.equalsIgnoreCase("DELETE")) {
   // ---------------------------------------------------------------------
   // A) MOVE : coord 1 → coord 2
   // ---------------------------------------------------------------------
-    if (coords.size() > 2){
+    if (coords.size() > 1){
 
       Point source = coords.get(0);
       Point dest = coords.get(1);
