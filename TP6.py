@@ -2,54 +2,130 @@ import webbrowser
 from pathlib import Path
 from ivy.ivy import IvyServer
 from bs4 import BeautifulSoup
+import time
 
-class Concurrent(IvyServer):
+class TP6Engine(IvyServer):
+
     def __init__(self, name):
 
-        IvyServer.__init__(self, "IvyServer")
+        IvyServer.__init__(self, name)
         self.name = name
-        self.start('127.255.255.255:2010')
-        self.bind_msg(self.handle_msg, "^ppilot5 Answer=Finished$")
-        print("here")
-        self.texte="""<h1>Toulouse, Ville Rose</h1>
+        self.start("127.255.255.255:2010")
+
+        # Notification de fin de lecture TTS
+        self.bind_msg(self.handle_tts_finished, "^ppilot5 Answer=Finished$")
+
+        # ----- MODE : concurrent / synergic -----
+        self.mode = "concurrent"
+
+        # ----- Charger / parser le HTML -----
+        self.texte = """
+        <h1>Toulouse, Ville Rose</h1>
 
         <h2>Histoire  et géographie</h2>
-        <b>Toulouse</b> (en occitan, <i>Tolosa</i> /tuˈluzɔ/) est une commune du Sud-Ouest de la France. 
-        <p>Capitale au Vème siècle du royaume wisigoth, capitale du <u>comté de Toulouse</u> fondé en 852 par Raimond Ier et capitale historique du Languedoc, elle est aujourd'hui le chef-lieu de la région Occitanie et du département de la Haute-Garonne.
-        
+        <b>Toulouse</b> (en occitan, <i>Tolosa</i>) est une commune du Sud-Ouest de la France.
+        <p>Capitale au Vème siècle du royaume wisigoth (...)</p>
+
         <h2>Lieux remarquables</h2>
-        <ul>
-            <li>Reliant Toulouse à Sète, le <u>canal du Midi</u> est inscrit au patrimoine mondial de l'Unesco depuis 1996.</li>
-            <li>La <u>basilique Saint-Sernin</u>, plus grand édifice roman d'Europe, y est également inscrite depuis 1998 au titre des chemins de Saint-Jacques de Compostelle.</li>
-        </ul>
-        
+        <p>Reliant Toulouse à Sète, le <u>canal du Midi</u> est inscrit au patrimoine mondial.</p>
+
         <h2>Sport</h2>
-        Le sport emblématique de Toulouse est le <b>rugby à XV</b>, son club du <b>Stade Toulousain</b> détenant le plus riche palmarès sur le plan national comme sur le plan continental, avec vingt-et-un titres de champion de France et cinq titres de champion d'Europe.
-        
+        <p>Le sport emblématique est le <b>rugby à XV</b> (...)</p>
+
         <h2>Gastronomie</h2>
-        Le <b>cassoulet</b>, la <b>saucisse</b> et la <b>violette</b> sont les spécialités emblématiques de la gastronomie toulousaine."""
+        <p>Le <b>cassoulet</b>, la <b>saucisse</b> et la <b>violette</b> sont typiques.</p>
+        """
 
-        path = Path("temp.html").resolve()
+        path = Path("toulouse.html")
         path.write_text(self.texte, encoding="utf-8")
+        #webbrowser.open(path.as_uri())
 
-        webbrowser.open(path.as_uri())
+        self.segments = self.parse_segments(self.texte)
+        self.index = 0
+        self.wait = False 
 
-        soup = BeautifulSoup(self.texte, "html.parser")
-        self.tags = [tag.name for tag in soup.find_all()]
-        self.wait=False
+    # ----------------------------------------------------------------
+    #           PARSER HTML -> SEGMENTS
+    # ----------------------------------------------------------------
+    def parse_segments(self, html):
+        soup = BeautifulSoup(html, "html.parser")
+        segments = []
 
+        for tag in soup.find_all(["h1", "h2", "p", "b"]):
 
-    def handle_msg(self, agent, numid, garbage):
-        self.wait=False
+            text = tag.get_text(strip=True)
+            if not text:
+                continue
 
+            seg = {
+                "texte": text,
+                "type": tag.name,
+                "gras": tag.name == "b" or tag.find("b") is not None,
+                "italique": tag.find("i") is not None,
+                "taille": "grand" if tag.name == "h1" else ("moyen" if tag.name == "h2" else "normal")
+            }
+            segments.append(seg)
+
+        return segments
+
+    #           GESTION FIN DE LECTURE DE PPILOT5
+    def handle_tts_finished(self, agent, numid, garbage):
+        self.wait = False
+
+    #           ENVOIS MULTIMODAUX
+
+    def send_braille(self, message):
+        message = message[:10]
+        self.send_msg(f"Braille_display Text={message}")
+
+    def send_tts_text(self, message):
+        self.send_msg(f"ppilot5 Say={message}")
+
+    def send_tts_ssml(self, ssml):
+        self.send_msg(f"ppilot5 SSML={ssml}")
+
+    #           FISSION MODES
+
+    def fission_concurrent(self, seg):
+        prefix = ""
+        if seg["type"] == "h1": prefix += "[H1]"
+        if seg["type"] == "h2": prefix += "[H2]"
+        if seg["gras"]: prefix += "[G]"
+        if seg["italique"]: prefix += "[I]"
+
+        self.send_braille(prefix)
+        self.send_tts_text(seg["texte"])
+
+    def fission_synergic(self, seg):
+
+        attrs = []
+        if seg["type"] == "h1": attrs.append("H1")
+        if seg["type"] == "h2": attrs.append("H2")
+        if seg["gras"]: attrs.append("G")
+        if seg["italique"]: attrs.append("I")
+        braille = " ".join(attrs)[:10] or "TXT"
+
+        self.send_braille(braille)
+        self.send_tts_text(seg["texte"])
+
+    #           LOOP
     def run(self):
-        for tag in self.tags:
-            while not self.wait:
-                print(tag)
-                self.send_msg(f"ppilot5 Say= {tag}")
-                self.send_msg("Braille_display Text=" + tag)
-                self.wait=True
+        while self.index < len(self.segments):
+            seg = self.segments[self.index]
+
+            # choisir le mode
+            if self.mode == "concurrent":
+                self.fission_concurrent(seg)
+            elif self.mode == "synergic":
+                self.fission_synergic(seg)
+
+            self.wait = True
+            while self.wait:
+                time.sleep(0.1)
+
+            self.index += 1
 
 
-a=Concurrent("Concurrent")
-a.run()
+if __name__ == "__main__":
+    moteur = TP6Engine("TP6")
+    moteur.run()
