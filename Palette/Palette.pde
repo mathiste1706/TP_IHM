@@ -421,7 +421,6 @@ else if (action.equalsIgnoreCase("DELETE")) {
 
 
 color colorFromName(String name) {
-  if (name == null) return color(200);
 
   switch(name.toUpperCase()) {
     case "RED":
@@ -440,12 +439,12 @@ color colorFromName(String name) {
       return color(0, 0, 255);
 
     case "PURPLE":
-      return color(160, 32, 240);  // vivid purple
+      return color(160, 32, 240);  
 
     case "DARK":
-      return color(30, 30, 30);    // nearly black
+      return color(30, 30, 30);    
+    
   }
-
   // default neutral gray
   return color(200, 200, 200);
 }

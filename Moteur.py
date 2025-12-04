@@ -5,6 +5,7 @@ from ivy.ivy import IvyServer
 class Moteur(IvyServer):
     def __init__(self, name):
         IvyServer.__init__(self, name)
+
         print("start")
         self.start('127.255.255.255:2010')
         self.bind_msg(self.handle_msg_vocal, "sra5 Parsed=action=(.*) where=(.*) form=(.*) color=(.*) localisation=(.*) Confidence=(.*) NP=.* Num_A=.*")
@@ -24,6 +25,7 @@ class Moteur(IvyServer):
         self.localisation =""
         self.coordonnees = []
         self.nbModalitees=0
+        self.colorPickedPalette = False
 
         self.timer=None
 
@@ -35,6 +37,8 @@ class Moteur(IvyServer):
 
 
     def fusion(self):
+
+
         if self.timer is None:
             return
 
@@ -48,12 +52,17 @@ class Moteur(IvyServer):
             self.localisation = ""
             self.coordonnees = []
             self.nbModalitees=0
+            self.colorPickedPalette=False
 
             self.timer = None
 
         elif (elapsed > self.SEUIL_FUSION and ( (self.action == "CREATE" and self.nbModalitees > 1 and self.forme != "")
         or (self.action == "DELETE" and (self.forme != "" or self.couleur != "") )
         or (self.action == "MOVE" and ( len(self.coordonnees) > 1 or self.forme != "" or self.couleur != "")))):
+
+            # Pour gerer le cas de "Creer une forme de cette couleur" et les cas de MOVE et DELETE
+            if self.colorPickedPalette and self.action=="CREATE":
+                self.coordonnees.pop(0)
 
             if not self.coordonnees and self.action=="CREATE":
                 self.coordonnees=[200,200]
@@ -69,6 +78,7 @@ class Moteur(IvyServer):
             self.localisation = ""
             self.coordonnees = []
             self.nbModalitees = 0
+            self.colorPickedPalette = False
 
 
 
@@ -103,6 +113,7 @@ class Moteur(IvyServer):
             self.coordonnees.append([x, y])
             if couleur!="undefined":
                 self.couleur=couleur
+                self.colorPickedPalette =True
             self.nbModalitees += 1
             self.update_timer()
 
